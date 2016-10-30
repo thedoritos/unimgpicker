@@ -24,3 +24,17 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
 }
+
+task deleteJar(type: Delete) {
+    delete 'release/unimgpicker.jar'
+}
+
+task exportJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar', 'unimgpicker.jar')
+}
+
+exportJar.dependsOn(deleteJar, build)
+
