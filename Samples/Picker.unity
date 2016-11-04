@@ -85,6 +85,12 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &72149232 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11470950, guid: d404a7c743785496d9709917da87b8e3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1196265096}
+  m_Script: {fileID: 11500000, guid: e673e7642862948e29c760426f26905f, type: 3}
 --- !u!1 &581240391
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +402,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1064901615}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1781963539}
+        m_MethodName: OnPressShowPicker
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1064901615
@@ -473,7 +490,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d404a7c743785496d9709917da87b8e3, type: 2}
-  m_RootGameObject: {fileID: 2030688426}
   m_IsPrefabParent: 0
 --- !u!1 &1487100235
 GameObject:
@@ -562,6 +578,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &1781963537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1781963538}
+  - 114: {fileID: 1781963539}
+  m_Layer: 0
+  m_Name: PickerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1781963538
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1781963537}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+--- !u!114 &1781963539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1781963537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e0e30c44772437ba287a4d065987d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 712164881}
+  imagePicker: {fileID: 72149232}
 --- !u!1 &1999570812
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,44 +744,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!1 &2030688426
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 125960, guid: d404a7c743785496d9709917da87b8e3, type: 2}
-  m_PrefabInternal: {fileID: 1196265096}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 2030688428}
-  - 114: {fileID: 2030688427}
-  m_Layer: 0
-  m_Name: Unimgpicker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2030688427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11470950, guid: d404a7c743785496d9709917da87b8e3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1196265096}
-  m_GameObject: {fileID: 2030688426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e673e7642862948e29c760426f26905f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2030688428
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 497980, guid: d404a7c743785496d9709917da87b8e3, type: 2}
-  m_PrefabInternal: {fileID: 1196265096}
-  m_GameObject: {fileID: 2030688426}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
