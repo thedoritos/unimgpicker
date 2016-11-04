@@ -21,12 +21,10 @@ namespace Kakera
 
         public void OnComplete(string url)
         {
-            Debug.Log("Unimgpicker.OnComplete url:" + url);
-
             var handler = Completed;
             if (handler != null)
             {
-                handler("file://" + url);
+                handler(url);
             }
         }
     }
