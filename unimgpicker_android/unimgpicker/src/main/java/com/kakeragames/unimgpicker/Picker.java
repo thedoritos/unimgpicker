@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.google.common.io.ByteStreams;
 import com.unity3d.player.UnityPlayer;
@@ -24,6 +25,9 @@ public class Picker extends Fragment
 	private static final String CALLBACK_OBJECT = "Unimgpicker";
 	private static final String CALLBACK_METHOD = "OnComplete";
 
+	private String mTitle;
+	private String mOutputFileName;
+
 	public static void show(String title) {
 		Activity unityActivity = UnityPlayer.currentActivity;
 		if (unityActivity == null) {
@@ -31,18 +35,26 @@ public class Picker extends Fragment
 			return;
 		}
 
-		Fragment fragment = new Picker();
+		Picker picker = new Picker();
+		picker.mTitle = title;
+		picker.mOutputFileName = "uimg";
+
 		FragmentTransaction transaction = unityActivity.getFragmentManager().beginTransaction();
 
-		transaction.add(fragment, TAG);
+		transaction.add(picker, TAG);
 		transaction.commit();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 		intent.setType("image/*");
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-		fragment.startActivityForResult(Intent.createChooser(intent, title), REQUEST_CODE);
+		startActivityForResult(Intent.createChooser(intent, mTitle), REQUEST_CODE);
 	}
 
 	@Override
@@ -64,11 +76,10 @@ public class Picker extends Fragment
 
 		Uri uri = data.getData();
 		Context context = getActivity().getApplicationContext();
-		String outputName = "uimg";
 
 		try {
 			InputStream inputStream = context.getContentResolver().openInputStream(uri);
-			FileOutputStream outputStream = context.openFileOutput(outputName, Context.MODE_PRIVATE);
+			FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE);
 			ByteStreams.copy(inputStream, outputStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -80,7 +91,7 @@ public class Picker extends Fragment
 			return;
 		}
 
-		File output = context.getFileStreamPath(outputName);
+		File output = context.getFileStreamPath(mOutputFileName);
 
 		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, output.getPath());
 	}
