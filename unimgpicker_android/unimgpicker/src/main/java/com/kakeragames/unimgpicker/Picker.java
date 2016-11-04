@@ -3,8 +3,12 @@ package com.kakeragames.unimgpicker;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import com.unity3d.player.UnityPlayer;
 
@@ -23,7 +27,7 @@ public class Picker extends Fragment
 			return;
 		}
 
-		Fragment fragment = new Fragment();
+		Fragment fragment = new Picker();
 		FragmentTransaction transaction = unityActivity.getFragmentManager().beginTransaction();
 
 		transaction.add(fragment, TAG);
@@ -49,6 +53,18 @@ public class Picker extends Fragment
 		transaction.commit();
 
 		Uri uri = data.getData();
-		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, uri.toString());
+		Context context = getActivity().getApplicationContext();
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, getPath(context, uri));
+	}
+
+	private String getPath(Context context, Uri uri) {
+		ContentResolver resolver = context.getContentResolver();
+		String[] columns = { MediaStore.Images.Media.DATA };
+		Cursor cursor = resolver.query(uri, columns, null, null, null);
+		cursor.moveToFirst();
+		String path = cursor.getString(0);
+		cursor.close();
+
+		return path;
 	}
 }
