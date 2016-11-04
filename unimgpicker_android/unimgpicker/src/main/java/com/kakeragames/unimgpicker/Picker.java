@@ -92,7 +92,8 @@ public class Picker extends Fragment
 		}
 
 		File output = context.getFileStreamPath(mOutputFileName);
+		String outputURL = "file://" + output.getPath();
 
-		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, output.getPath());
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, outputURL);
 	}
 }
