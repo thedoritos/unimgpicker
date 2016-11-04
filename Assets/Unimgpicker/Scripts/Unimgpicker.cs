@@ -26,7 +26,7 @@ namespace Kakera
             var handler = Completed;
             if (handler != null)
             {
-                handler(url);
+                handler("file://" + url);
             }
         }
     }

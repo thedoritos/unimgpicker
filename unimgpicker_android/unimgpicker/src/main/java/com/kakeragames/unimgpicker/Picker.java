@@ -7,10 +7,18 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Debug;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 
 import com.unity3d.player.UnityPlayer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 public class Picker extends Fragment
 {
@@ -37,6 +45,7 @@ public class Picker extends Fragment
 		intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
 		intent.setType("image/*");
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
+
 		fragment.startActivityForResult(Intent.createChooser(intent, title), REQUEST_CODE);
 	}
 
@@ -52,19 +61,24 @@ public class Picker extends Fragment
 		transaction.remove(this);
 		transaction.commit();
 
-		Uri uri = data.getData();
+		if (resultCode != Activity.RESULT_OK || data == null) {
+			// TODO: Notify failure.
+			return;
+		}
+
+		String realPath;
 		Context context = getActivity().getApplicationContext();
-		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, getPath(context, uri));
-	}
 
-	private String getPath(Context context, Uri uri) {
-		ContentResolver resolver = context.getContentResolver();
-		String[] columns = { MediaStore.Images.Media.DATA };
-		Cursor cursor = resolver.query(uri, columns, null, null, null);
-		cursor.moveToFirst();
-		String path = cursor.getString(0);
-		cursor.close();
+		if (Build.VERSION.SDK_INT < 11)
+			// SDK < API11
+			realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(context, data.getData());
+		else if (Build.VERSION.SDK_INT < 19)
+			// SDK >= 11 && SDK < 19
+			realPath = RealPathUtil.getRealPathFromURI_API11to18(context, data.getData());
+		else
+			// SDK > 19 (Android 4.4)
+			realPath = RealPathUtil.getRealPathFromURI_API19(context, data.getData());
 
-		return path;
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, realPath);
 	}
 }
