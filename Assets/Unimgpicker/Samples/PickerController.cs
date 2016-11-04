@@ -22,7 +22,7 @@ namespace Kakera
 
         public void OnPressShowPicker()
         {
-            imagePicker.Show();
+            imagePicker.Show("Select Image", "unimgpicker");
         }
 
         private IEnumerator LoadImage(string url, Image output)

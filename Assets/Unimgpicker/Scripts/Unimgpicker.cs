@@ -11,11 +11,11 @@ namespace Kakera
 
         private static readonly string PickerClass = "com.kakeragames.unimgpicker.Picker";
 
-        public void Show()
+        public void Show(string title, string outputFileName)
         {
             using (var picker = new AndroidJavaClass(PickerClass))
             {
-                picker.CallStatic("show", "Select Image", "unimgpicker");
+                picker.CallStatic("show", title, outputFileName);
             }
         }
 
