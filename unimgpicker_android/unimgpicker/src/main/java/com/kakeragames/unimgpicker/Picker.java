@@ -28,7 +28,7 @@ public class Picker extends Fragment
 	private String mTitle;
 	private String mOutputFileName;
 
-	public static void show(String title) {
+	public static void show(String title, String outputFileName) {
 		Activity unityActivity = UnityPlayer.currentActivity;
 		if (unityActivity == null) {
 			// TODO: Notify failure.
@@ -37,7 +37,7 @@ public class Picker extends Fragment
 
 		Picker picker = new Picker();
 		picker.mTitle = title;
-		picker.mOutputFileName = "uimg";
+		picker.mOutputFileName = outputFileName;
 
 		FragmentTransaction transaction = unityActivity.getFragmentManager().beginTransaction();
 

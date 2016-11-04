@@ -15,7 +15,7 @@ namespace Kakera
         {
             using (var picker = new AndroidJavaClass(PickerClass))
             {
-                picker.CallStatic("show", "Select Image");
+                picker.CallStatic("show", "Select Image", "unimgpicker");
             }
         }
 
