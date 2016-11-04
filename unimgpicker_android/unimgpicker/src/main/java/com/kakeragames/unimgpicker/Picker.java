@@ -3,21 +3,17 @@ package com.kakeragames.unimgpicker;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Debug;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
 
+import com.google.common.io.ByteStreams;
 import com.unity3d.player.UnityPlayer;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Picker extends Fragment
@@ -66,19 +62,26 @@ public class Picker extends Fragment
 			return;
 		}
 
-		String realPath;
+		Uri uri = data.getData();
 		Context context = getActivity().getApplicationContext();
+		String outputName = "uimg";
 
-		if (Build.VERSION.SDK_INT < 11)
-			// SDK < API11
-			realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(context, data.getData());
-		else if (Build.VERSION.SDK_INT < 19)
-			// SDK >= 11 && SDK < 19
-			realPath = RealPathUtil.getRealPathFromURI_API11to18(context, data.getData());
-		else
-			// SDK > 19 (Android 4.4)
-			realPath = RealPathUtil.getRealPathFromURI_API19(context, data.getData());
+		try {
+			InputStream inputStream = context.getContentResolver().openInputStream(uri);
+			FileOutputStream outputStream = context.openFileOutput(outputName, Context.MODE_PRIVATE);
+			ByteStreams.copy(inputStream, outputStream);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			// TODO: Notify failure.
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			// TODO: Notify failure.
+			return;
+		}
 
-		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, realPath);
+		File output = context.getFileStreamPath(outputName);
+
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, output.getPath());
 	}
 }
