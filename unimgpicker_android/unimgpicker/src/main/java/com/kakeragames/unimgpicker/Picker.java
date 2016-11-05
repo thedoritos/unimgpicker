@@ -24,6 +24,7 @@ public class Picker extends Fragment
 
 	private static final String CALLBACK_OBJECT = "Unimgpicker";
 	private static final String CALLBACK_METHOD = "OnComplete";
+	private static final String CALLBACK_METHOD_FAILURE = "OnFailure";
 
 	private String mTitle;
 	private String mOutputFileName;
@@ -31,7 +32,7 @@ public class Picker extends Fragment
 	public static void show(String title, String outputFileName) {
 		Activity unityActivity = UnityPlayer.currentActivity;
 		if (unityActivity == null) {
-			// TODO: Notify failure.
+			Picker.NotifyFailure("Failed to open the picker");
 			return;
 		}
 
@@ -43,6 +44,14 @@ public class Picker extends Fragment
 
 		transaction.add(picker, TAG);
 		transaction.commit();
+	}
+
+	private static void NotifySuccess(String path) {
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, path);
+	}
+
+	public static void NotifyFailure(String cause) {
+		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, cause);
 	}
 
 	@Override
@@ -70,7 +79,7 @@ public class Picker extends Fragment
 		transaction.commit();
 
 		if (resultCode != Activity.RESULT_OK || data == null) {
-			// TODO: Notify failure.
+			Picker.NotifyFailure("Failed to pick the image");
 			return;
 		}
 
@@ -83,17 +92,15 @@ public class Picker extends Fragment
 			ByteStreams.copy(inputStream, outputStream);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			// TODO: Notify failure.
+			Picker.NotifyFailure("Failed to find the image");
 			return;
 		} catch (IOException e) {
 			e.printStackTrace();
-			// TODO: Notify failure.
+			Picker.NotifyFailure("Failed to copy the image");
 			return;
 		}
 
 		File output = context.getFileStreamPath(mOutputFileName);
-		String outputURL = "file://" + output.getPath();
-
-		UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, outputURL);
+		Picker.NotifySuccess(output.getPath());
 	}
 }
