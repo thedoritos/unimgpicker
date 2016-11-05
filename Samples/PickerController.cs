@@ -14,9 +14,9 @@ namespace Kakera
 
         void Awake()
         {
-            imagePicker.Completed += (string url) =>
+            imagePicker.Completed += (string path) =>
             {
-                StartCoroutine(LoadImage(url, image));
+                StartCoroutine(LoadImage(path, image));
             };
         }
 
@@ -25,8 +25,9 @@ namespace Kakera
             imagePicker.Show("Select Image", "unimgpicker");
         }
 
-        private IEnumerator LoadImage(string url, Image output)
+        private IEnumerator LoadImage(string path, Image output)
         {
+            var url = "file://" + path;
             var www = new WWW(url);
             yield return www;
 

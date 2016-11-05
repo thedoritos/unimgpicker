@@ -5,9 +5,13 @@ namespace Kakera
 {
     public class Unimgpicker : MonoBehaviour
     {
-        public delegate void ImageDelegate(string url);
+        public delegate void ImageDelegate(string path);
+
+        public delegate void ErrorDelegate(string message);
 
         public event ImageDelegate Completed;
+
+        public event ErrorDelegate Failed;
 
         private static readonly string PickerClass = "com.kakeragames.unimgpicker.Picker";
 
@@ -19,12 +23,21 @@ namespace Kakera
             }
         }
 
-        public void OnComplete(string url)
+        public void OnComplete(string path)
         {
             var handler = Completed;
             if (handler != null)
             {
-                handler(url);
+                handler(path);
+            }
+        }
+
+        public void OnFailure(string message)
+        {
+            var handler = Failed;
+            if (handler != null)
+            {
+                handler(message);
             }
         }
     }
