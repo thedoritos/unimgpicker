@@ -89,7 +89,19 @@ public class Picker extends Fragment
 		try {
 			InputStream inputStream = context.getContentResolver().openInputStream(uri);
 			FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE);
-			ByteStreams.copy(inputStream, outputStream);
+
+			byte[] buf = new byte[8192];
+			while (true) {
+				int r = inputStream.read(buf);
+				if (r == -1) {
+					break;
+				}
+				outputStream.write(buf, 0, r);
+			}
+
+			outputStream.close();
+			inputStream.close();
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Picker.NotifyFailure("Failed to find the image");
