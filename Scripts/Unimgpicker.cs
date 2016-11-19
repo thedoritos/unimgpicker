@@ -13,17 +13,21 @@ namespace Kakera
 
         public event ErrorDelegate Failed;
 
-        private static readonly string PickerClass = "com.kakeragames.unimgpicker.Picker";
+        private IPicker picker = 
+        #if UNITY_IOS && !UNITY_EDITOR
+            new PickeriOS();
+        #elif UNITY_ANDROID && !UNITY_EDITOR
+            new PickerAndroid();
+        #else
+            new PickerUnsupported();
+        #endif
 
         public void Show(string title, string outputFileName)
         {
-            using (var picker = new AndroidJavaClass(PickerClass))
-            {
-                picker.CallStatic("show", title, outputFileName);
-            }
+            picker.Show(title, outputFileName);
         }
 
-        public void OnComplete(string path)
+        private void OnComplete(string path)
         {
             var handler = Completed;
             if (handler != null)
@@ -32,7 +36,7 @@ namespace Kakera
             }
         }
 
-        public void OnFailure(string message)
+        private void OnFailure(string message)
         {
             var handler = Failed;
             if (handler != null)
