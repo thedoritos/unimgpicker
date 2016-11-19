@@ -1,6 +1,10 @@
 # unimgpicker
 
-Image picker for Unity Android
+Image picker for Unity iOS/Android
+
+## Getting Started
+
+Define Photo Library Usage Description on `Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt`
 
 ## Development
 
