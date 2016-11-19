@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 namespace Kakera
@@ -7,16 +6,16 @@ namespace Kakera
     public class PickerController : MonoBehaviour
     {
         [SerializeField]
-        private Image image;
+        private Unimgpicker imagePicker;
 
         [SerializeField]
-        private Unimgpicker imagePicker;
+        private MeshRenderer imageRenderer;
 
         void Awake()
         {
             imagePicker.Completed += (string path) =>
             {
-                StartCoroutine(LoadImage(path, image));
+                StartCoroutine(LoadImage(path, imageRenderer));
             };
         }
 
@@ -25,7 +24,7 @@ namespace Kakera
             imagePicker.Show("Select Image", "unimgpicker");
         }
 
-        private IEnumerator LoadImage(string path, Image output)
+        private IEnumerator LoadImage(string path, MeshRenderer output)
         {
             var url = "file://" + path;
             var www = new WWW(url);
@@ -37,7 +36,7 @@ namespace Kakera
                 Debug.LogError("Failed to load texture url:" + url);
             }
 
-            output.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+            output.material.mainTexture = texture;
         }
     }
 }
