@@ -5,10 +5,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.common.io.ByteStreams;
 import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
@@ -28,8 +29,9 @@ public class Picker extends Fragment
 
 	private String mTitle;
 	private String mOutputFileName;
+	private int mMaxSize;
 
-	public static void show(String title, String outputFileName) {
+	public static void show(String title, String outputFileName, int maxSize) {
 		Activity unityActivity = UnityPlayer.currentActivity;
 		if (unityActivity == null) {
 			Picker.NotifyFailure("Failed to open the picker");
@@ -39,6 +41,7 @@ public class Picker extends Fragment
 		Picker picker = new Picker();
 		picker.mTitle = title;
 		picker.mOutputFileName = outputFileName;
+		picker.mMaxSize = maxSize;
 
 		FragmentTransaction transaction = unityActivity.getFragmentManager().beginTransaction();
 
@@ -88,20 +91,36 @@ public class Picker extends Fragment
 
 		try {
 			InputStream inputStream = context.getContentResolver().openInputStream(uri);
-			FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE);
 
-			byte[] buf = new byte[8192];
-			while (true) {
-				int r = inputStream.read(buf);
-				if (r == -1) {
-					break;
-				}
-				outputStream.write(buf, 0, r);
-			}
+			// Decode metadata
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			opts.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(inputStream, null, opts);
+			inputStream.close();
+
+			// Calc size
+			float scaleX = Math.min((float)mMaxSize / opts.outWidth, 1.0f);
+			float scaleY = Math.min((float)mMaxSize / opts.outHeight, 1.0f);
+			float scale = Math.min(scaleX, scaleY);
+
+			float width = opts.outWidth * scale;
+			float height = opts.outHeight * scale;
+
+			// Decode image roughly
+			inputStream = context.getContentResolver().openInputStream(uri);
+			opts = new BitmapFactory.Options();
+			opts.inSampleSize = (int)(1.0f / scale);
+			Bitmap roughImage = BitmapFactory.decodeStream(inputStream, null, opts);
+
+			// Resize image exactly
+			Bitmap image = Bitmap.createScaledBitmap(roughImage, (int) width, (int) height, true);
+
+			// Output image
+			FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE);
+			image.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
 
 			outputStream.close();
 			inputStream.close();
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Picker.NotifyFailure("Failed to find the image");

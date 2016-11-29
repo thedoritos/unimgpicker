@@ -32,7 +32,7 @@ task deleteJar(type: Delete) {
 
 task exportJar(type: Copy) {
     from('build/intermediates/bundles/release/')
-    into('../../Assets/Plugins/Unimgpicker/Android/')
+    into('../../Assets/Plugins/Android/Unimgpicker/libs/')
     include('classes.jar')
     rename('classes.jar', 'unimgpicker.jar')
 }

@@ -21,7 +21,7 @@ namespace Kakera
 
         public void OnPressShowPicker()
         {
-            imagePicker.Show("Select Image", "unimgpicker");
+            imagePicker.Show("Select Image", "unimgpicker", 1024);
         }
 
         private IEnumerator LoadImage(string path, MeshRenderer output)
