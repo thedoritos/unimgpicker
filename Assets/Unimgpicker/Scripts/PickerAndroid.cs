@@ -11,7 +11,7 @@ namespace Kakera
         {
             using (var picker = new AndroidJavaClass(PickerClass))
             {
-                picker.CallStatic("show", title, outputFileName);
+                picker.CallStatic("show", title, outputFileName, maxSize);
             }
         }
     }
