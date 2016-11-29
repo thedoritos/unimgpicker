@@ -44,7 +44,9 @@ namespace Kakera
 
         public void OnPressShowPicker()
         {
-            imagePicker.Show("Select Image", "unimgpicker");
+            // With v1.1 or greater, you can set the maximum size of the image
+            // to save the memory usage.
+            imagePicker.Show("Select Image", "unimgpicker", 1024);
         }
 
         private IEnumerator LoadImage(string path, MeshRenderer output)
