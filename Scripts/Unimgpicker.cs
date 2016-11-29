@@ -22,9 +22,9 @@ namespace Kakera
             new PickerUnsupported();
         #endif
 
-        public void Show(string title, string outputFileName)
+        public void Show(string title, string outputFileName, int maxSize)
         {
-            picker.Show(title, outputFileName);
+            picker.Show(title, outputFileName, maxSize);
         }
 
         private void OnComplete(string path)
