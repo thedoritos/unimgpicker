@@ -115,6 +115,6 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 extern "C" {
     void Unimgpicker_show(const char* title, const char* outputFileName, int maxSize) {
         Picker *picker = [Picker sharedInstance];
-        [picker show:[NSString stringWithUTF8String:title] outputFileName:[NSString stringWithUTF8String:outputFileName]];
+        [picker show:[NSString stringWithUTF8String:title] outputFileName:[NSString stringWithUTF8String:outputFileName] maxSize:(NSInteger)maxSize];
     }
 }
