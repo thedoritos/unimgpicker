@@ -12,14 +12,15 @@ namespace Kakera
 		{
 			var path = EditorUtility.OpenFilePanel(title, "","png");
 			if (path.Length != 0) {
-				if (File.Exists(Application.persistentDataPath + "/" + outputFileName))
-					File.Delete(Application.persistentDataPath + "/" + outputFileName);
-				File.Copy(path, Application.persistentDataPath + "/" + outputFileName);
-				Debug.Log (Application.persistentDataPath + "/" + outputFileName);
+				string destination = Application.persistentDataPath + "/" + outputFileName;
+				if (File.Exists(destination))
+					File.Delete(destination);
+				File.Copy(path, destination);
+				Debug.Log ("PickerOSX:" + destination);
 				var receiver = GameObject.Find("Unimgpicker");
 				if (receiver != null)
 				{
-					receiver.SendMessage("OnComplete", path);
+					receiver.SendMessage("OnComplete", Application.persistentDataPath + "/" + outputFileName);
 				}
 			}
 		}
