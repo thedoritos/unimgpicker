@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR_OSX
+﻿#if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
 using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Kakera
 {
-	internal class PickerOSX_editor : IPicker
+	internal class Picker_editor : IPicker
 	{
 		public void Show(string title, string outputFileName, int maxSize)
 		{
