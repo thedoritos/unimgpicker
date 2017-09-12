@@ -6,6 +6,9 @@
 unimgpicker_ios/*
 !unimgpicker_ios/.keep
 
+### OSX
+
+.DS_Store
 
 ### https://raw.github.com/github/gitignore/be3333655bffe9507d66cc864aee95ed6052b4ed/Unity.gitignore
 
