@@ -295,7 +295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 252355329}
         m_MethodName: OnPressShowPicker
         m_Mode: 1
         m_Arguments:
