@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.media.ExifInterface;
 
 import com.unity3d.player.UnityPlayer;
 
@@ -96,9 +98,9 @@ public class Picker extends Fragment
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(inputStream, null, opts);
-			inputStream.close();
+            inputStream.close();
 
-			// Calc size
+            // Calc size
 			float scaleX = Math.min((float)mMaxSize / opts.outWidth, 1.0f);
 			float scaleY = Math.min((float)mMaxSize / opts.outHeight, 1.0f);
 			float scale = Math.min(scaleX, scaleY);
@@ -114,6 +116,32 @@ public class Picker extends Fragment
 
 			// Resize image exactly
 			Bitmap image = Bitmap.createScaledBitmap(roughImage, (int) width, (int) height, true);
+
+            // Fix orientation
+            InputStream exifStream = context.getContentResolver().openInputStream(uri);
+            ExifInterface exif = new ExifInterface(exifStream);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
+
+            int rotation = 0;
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotation = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotation = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotation = 270;
+                    break;
+            }
+
+            Matrix transform = new Matrix();
+            transform.postRotate(rotation);
+            exifStream.close();
+
+            if (rotation != 0) {
+                image = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight(), transform, true);
+            }
 
 			// Output image
 			FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE);
