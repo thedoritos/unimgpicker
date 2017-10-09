@@ -7,6 +7,7 @@
 //
 
 #import "Picker.h"
+#import "UIImage+FixOrientation.h"
 
 #pragma mark Config
 
@@ -36,13 +37,13 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_PICK);
         return;
     }
-    
+
     self.pickerController = [[UIImagePickerController alloc] init];
     self.pickerController.delegate = self;
-    
+
     self.pickerController.allowsEditing = NO;
     self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
+
     UIViewController *unityController = UnityGetGLViewController();
     [unityController presentViewController:self.pickerController animated:YES completion:^{
         self.outputFileName = name;
@@ -53,24 +54,27 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
+
     if (image == nil) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_FIND);
         [self dismissPicker];
         return;
     }
-    
+
+    image = [image imageWithFixedOrientation];
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     if (paths.count == 0) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
         [self dismissPicker];
         return;
     }
-    
+
     NSString *imageName = self.outputFileName;
     if ([imageName hasSuffix:@".png"] == NO) {
         imageName = [imageName stringByAppendingString:@".png"];
     }
-    
+
     NSString *imageSavePath = [(NSString *)[paths objectAtIndex:0] stringByAppendingPathComponent:imageName];
     NSData *png = UIImagePNGRepresentation(image);
     if (png == nil) {
@@ -78,29 +82,29 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
         [self dismissPicker];
         return;
     }
-    
+
     BOOL success = [png writeToFile:imageSavePath atomically:YES];
     if (success == NO) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
         [self dismissPicker];
         return;
     }
-    
+
     UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, [imageSavePath UTF8String]);
-    
+
     [self dismissPicker];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_PICK);
-    
+
     [self dismissPicker];
 }
 
 - (void)dismissPicker
 {
     self.outputFileName = nil;
-    
+
     if (self.pickerController != nil) {
         [self.pickerController dismissViewControllerAnimated:YES completion:^{
             self.pickerController = nil;
