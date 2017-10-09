@@ -11,11 +11,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kakeragames.unimgpicker_android.DevelopmentActivity">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_centerInParent="true"
+        android:id="@+id/image_view"
+        tools:src="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Show Picker"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Picker"/>
+
+        <Button
+            android:layout_marginLeft="8dp"
+            android:id="@+id/button_reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reload Image"/>
+    </LinearLayout>
 </RelativeLayout>
