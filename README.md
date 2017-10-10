@@ -67,7 +67,10 @@ namespace Kakera
 }
 ```
 
-## Development
+## For Plugin Developers
 
-- The Android project depends on OSX
-    - Because it loads `classes.jar` from the Unity Application path.
+### Dependency
+
+The Android plugin project depends on OSX.
+Because it loads `classes.jar` from the Unity Application path.
+
