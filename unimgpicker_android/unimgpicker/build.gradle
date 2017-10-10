@@ -29,16 +29,24 @@ dependencies {
     compile "com.android.support:exifinterface:$support_lib_version"
 }
 
+def pluginLocation = "../../Assets/Plugins/Android/Unimgpicker/libs/"
+def pluginName = "unimgpicker.jar"
+
+task createJar(type: Jar) {
+    from {
+        fileTree(dir: "src/main/java", include: "**/*.java")
+    }
+    archiveName = pluginName
+}
+
 task deleteJar(type: Delete) {
-    delete '../../Assets/Plugins/Unimgpicker/Android/unimgpicker.jar'
+    delete pluginLocation + pluginName
 }
 
 task exportJar(type: Copy) {
-    from('build/intermediates/bundles/release/')
-    into('../../Assets/Plugins/Android/Unimgpicker/libs/')
-    include('classes.jar')
-    rename('classes.jar', 'unimgpicker.jar')
+    from('build/libs/')
+    into(pluginLocation)
+    include(pluginName)
 }
 
-exportJar.dependsOn(deleteJar, build)
-
+exportJar.dependsOn(deleteJar, createJar)

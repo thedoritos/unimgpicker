@@ -74,3 +74,10 @@ namespace Kakera
 The Android plugin project depends on OSX.
 Because it loads `classes.jar` from the Unity Application path.
 
+### Export
+
+Build jar with a gradle task at `./unimgpicker_android`.
+
+```sh
+./gradlew unimgpicker:exportJar
+```
