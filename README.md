@@ -15,6 +15,13 @@ ex: **Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt**
 Use the image to create your profile.
 ```
 
+## Build
+
+When you build an APK, you have to set build system to `Gradle (New)`.
+This is because Unimgpicker requires `exifinterface` support library.
+
+If your build fails due to SDK version conflicts, edit `build.gradle` in Unimgpicker directory.
+
 ## Demo
 
 Read image, create texture and render it on the Cube(MeshRenderer).
