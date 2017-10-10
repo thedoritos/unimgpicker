@@ -141,7 +141,7 @@ PlayerSettings:
   targetPixelDensity: 0
   resolutionScalingMode: 0
   applicationIdentifier:
-    Android: com.kakeragames.unimgpicker
+    Android: com.kakeragames.unimgpicker.sample
     Standalone: unity.kakeragames.unimgpicker
     Tizen: com.kakeragames.unimgpicker
     iOS: com.kakeragames.unimgpicker
