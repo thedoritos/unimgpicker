@@ -4,6 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Unimgpicker/Samples/Picker.unity
+  m_Scenes: []
