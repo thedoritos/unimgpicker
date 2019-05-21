@@ -10,6 +10,7 @@ Image picker for Unity iOS/Android
 | Platform | OS |  IDE |
 | --- | --- | --- |
 | iOS | 12.1 | Xcode 10.1 |
+| Android | 9 | -- |
 
 ## Getting Started
 
