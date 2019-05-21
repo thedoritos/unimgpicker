@@ -5,6 +5,12 @@ Image picker for Unity iOS/Android
 ![unimgpicker_ios](doc/unimgpicker_ios.gif)
 ![unimgpicker_android](doc/unimgpicker_android.gif)
 
+## Environment
+
+| Platform | OS |  IDE |
+| --- | --- | --- |
+| iOS | 12.1 | Xcode 10.1 |
+
 ## Getting Started
 
 Define Photo Library Usage Description on `Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt`
