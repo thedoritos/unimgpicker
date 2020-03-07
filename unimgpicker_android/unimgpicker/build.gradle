@@ -19,11 +19,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('/Applications/Unity/PlaybackEngines/AndroidPlayer/Variations/il2cpp/Release/Classes/classes.jar')
-    compile 'com.google.guava:guava:20.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // NOTE: If you want to compile code by self and use Unity with different version,
+    //       please change the path to point your version of Unity dir.
+    // noinspection GradlePath
+    api files('/Applications/Unity/Hub/Editor/2019.3.4f1/PlaybackEngines/AndroidPlayer/Variations/il2cpp/Release/Classes/classes.jar')
+
+    implementation 'com.google.guava:guava:24.1-jre'
 }
 
 task deleteJar(type: Delete) {

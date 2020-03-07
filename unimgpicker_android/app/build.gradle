@@ -4,6 +4,11 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.kakeragames.unimgpicker_android"
         minSdkVersion 16
@@ -20,8 +25,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile project(path: ':unimgpicker')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':unimgpicker')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
