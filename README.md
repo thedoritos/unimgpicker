@@ -76,7 +76,12 @@ namespace Kakera
 }
 ```
 
-## Development
+## Building Unimgpicker by Self
 
-- The Android project depends on OSX
-    - Because it loads `classes.jar` from the Unity Application path.
+This repository contains Android project to develop Unimgpicker.
+You can make changes to the code and build your own jar.
+
+```sh
+$ unimgpicker_android
+$ ./gradlew unityLibrary:Unimgpicker:exportJar
+```
