@@ -29,13 +29,20 @@ android {
 }
 
 task deleteJar(type: Delete) {
-    delete '../../Assets/Plugins/Unimgpicker/Android/unimgpicker.jar'
+    delete '../../../Assets/Plugins/Android/Unimgpicker/libs/'
 }
 
-task exportJar(type: Copy) {
-    from('build/intermediates/packaged-classes/release/classes.jar')
+task createJar(type: Jar) {
+    from "$buildDir/intermediates/javac/release/compileReleaseJavaWithJavac/classes/"
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+createJar.dependsOn(deleteJar, build)
+
+task exportJar(type: Copy, dependsOn: createJar) {
+    from "$buildDir/libs/Unimgpicker.jar"
     into('../../../Assets/Plugins/Android/Unimgpicker/libs/')
-    rename('classes.jar', 'unimgpicker.jar')
+    rename('Unimgpicker.jar', 'unimgpicker.jar')
 }
-
-exportJar.dependsOn(deleteJar, build)
