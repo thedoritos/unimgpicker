@@ -125,6 +125,10 @@ public class Picker extends Fragment
             e.printStackTrace();
             Picker.NotifyFailure("Failed to find the image");
             return;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            Picker.NotifyFailure("Invalid image format or size");
+            return;
         } catch (IOException e) {
             e.printStackTrace();
             Picker.NotifyFailure("Failed to copy the image");
