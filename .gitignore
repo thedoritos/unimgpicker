@@ -63,6 +63,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+!unimgpicker.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
