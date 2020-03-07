@@ -20,6 +20,10 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 
 #pragma mark Picker
 
+@interface Picker()
+@property(nonatomic) CGFloat maxSize;
+@end
+
 @implementation Picker
 
 + (instancetype)sharedInstance {
@@ -42,7 +46,9 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
     
     self.pickerController.allowsEditing = NO;
     self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
+
+    self.maxSize = (CGFloat)maxSize;
+
     UIViewController *unityController = UnityGetGLViewController();
     [unityController presentViewController:self.pickerController animated:YES completion:^{
         self.outputFileName = name;
@@ -52,13 +58,28 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    CGFloat maxSize = self.maxSize;
+    self.maxSize = 0;
+
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     if (image == nil) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_FIND);
         [self dismissPicker];
         return;
     }
-    
+
+    CGFloat scaleX = fmin(maxSize / image.size.width, 1.0);
+    CGFloat scaleY = fmin(maxSize / image.size.height, 1.0);
+    CGFloat scale = fmin(scaleX, scaleY);
+
+    if (scale != 1.0) {
+        CGSize newSize = CGSizeMake(image.size.width * scale, image.size.height * scale);
+        UIGraphicsBeginImageContext(newSize);
+        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     if (paths.count == 0) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
