@@ -2,24 +2,24 @@ apply plugin: 'android-library'
 
 dependencies {
     implementation fileTree(dir: 'bin', include: ['*.jar'])
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: "${project(':unityLibrary').projectDir}/libs", include: ['*.jar'])
 }
 
 android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            //java.srcDirs = ['src']
+            java.srcDirs = ['src']
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
-            jniLibs.srcDirs = ['libs']
+            //jniLibs.srcDirs = ['libs']
         }
     }
 
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        targetSdkVersion 16
+        targetSdkVersion 28
     }
 
     lintOptions {
