@@ -7,10 +7,12 @@ Image picker for Unity iOS/Android
 
 ## Environment
 
+The code is developed on following environments. Note that these are NOT minimum version requirements.
+
 | Platform | OS |  IDE |
 | --- | --- | --- |
-| iOS | 12.1 | Xcode 10.1 |
-| Android | 9 | -- |
+| iOS | 13.3 | Xcode 11.3.1 |
+| Android | 10.0 (API 29) | Android Studio 3.6.1 |
 
 ## Getting Started
 
