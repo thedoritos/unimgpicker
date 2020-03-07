@@ -1,0 +1,48 @@
+apply plugin: 'android-library'
+
+dependencies {
+    implementation fileTree(dir: 'bin', include: ['*.jar'])
+    implementation fileTree(dir: "${project(':unityLibrary').projectDir}/libs", include: ['*.jar'])
+}
+
+android {
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            //jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+task deleteJar(type: Delete) {
+    delete '../../../Assets/Plugins/Android/Unimgpicker/libs/'
+}
+
+task createJar(type: Jar) {
+    from "$buildDir/intermediates/javac/release/compileReleaseJavaWithJavac/classes/"
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+createJar.dependsOn(deleteJar, build)
+
+task exportJar(type: Copy, dependsOn: createJar) {
+    from "$buildDir/libs/Unimgpicker.jar"
+    into('../../../Assets/Plugins/Android/Unimgpicker/libs/')
+    rename('Unimgpicker.jar', 'unimgpicker.jar')
+}

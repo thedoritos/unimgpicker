@@ -12,7 +12,7 @@ The code is developed on following environments. Note that these are NOT minimum
 | Platform | OS |  IDE |
 | --- | --- | --- |
 | iOS | 13.3 | Xcode 11.3.1 |
-| Android | 10.0 (API 29) | Android Studio 3.6.1 |
+| Android | 9.0 (API 28) | Android Studio 3.6.1 |
 
 ## Getting Started
 
@@ -76,7 +76,12 @@ namespace Kakera
 }
 ```
 
-## Development
+## Building Unimgpicker by Self
 
-- The Android project depends on OSX
-    - Because it loads `classes.jar` from the Unity Application path.
+This repository contains Android project to develop Unimgpicker.
+You can make changes to the code and build your own jar.
+
+```sh
+$ unimgpicker_android
+$ ./gradlew unityLibrary:Unimgpicker:exportJar
+```

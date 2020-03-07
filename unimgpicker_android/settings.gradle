@@ -1,1 +1,2 @@
-include ':app', ':unimgpicker'
+include ':launcher', ':unityLibrary'
+include 'unityLibrary:Unimgpicker'
