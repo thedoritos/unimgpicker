@@ -26,3 +26,16 @@ android {
         abortOnError false
     }
 }
+
+task deleteJar(type: Delete) {
+    delete '../../Assets/Plugins/Unimgpicker/Android/unimgpicker.jar'
+}
+
+task exportJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into("../../../Assets/Plugins/Android/Unimgpicker/libs/")
+    include('classes.jar')
+    rename('classes.jar', 'unimgpicker.jar')
+}
+
+exportJar.dependsOn(deleteJar, build)
