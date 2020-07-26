@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 namespace Kakera
 {
@@ -34,10 +34,10 @@ namespace Kakera
         private IEnumerator LoadImage(string path, MeshRenderer output)
         {
             var url = "file://" + path;
-            var www = new WWW(url);
-            yield return www;
+            var unityWebRequestTexture = UnityWebRequestTexture.GetTexture(url);
+            yield return unityWebRequestTexture.SendWebRequest();
 
-            var texture = www.texture;
+            var texture = ((DownloadHandlerTexture)unityWebRequestTexture.downloadHandler).texture;
             if (texture == null)
             {
                 Debug.LogError("Failed to load texture url:" + url);
