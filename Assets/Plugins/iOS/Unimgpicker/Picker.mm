@@ -36,7 +36,7 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 }
 
 - (void)show:(NSString *)title outputFileName:(NSString *)name maxSize:(NSInteger)maxSize {
-    if (self.pickerController != nil) {
+    if (self.pickerController != nil && self.pickerController.beingPresented) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_PICK);
         return;
     }
