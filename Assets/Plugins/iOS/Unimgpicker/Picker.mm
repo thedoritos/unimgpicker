@@ -21,7 +21,6 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 #pragma mark Picker
 
 @interface Picker()
-@property(nonatomic) CGFloat maxSize;
 @end
 
 @implementation Picker
@@ -35,19 +34,17 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
     return instance;
 }
 
-- (void)show:(NSString *)title outputFileName:(NSString *)name maxSize:(NSInteger)maxSize {
+- (void)show:(NSString *)title outputFileName:(NSString *)name {
     if (self.pickerController != nil && self.pickerController.beingPresented) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_PICK);
         return;
     }
-    
+
     self.pickerController = [[UIImagePickerController alloc] init];
     self.pickerController.delegate = self;
-    
+
     self.pickerController.allowsEditing = NO;
     self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
-    self.maxSize = (CGFloat)maxSize;
 
     UIViewController *unityController = UnityGetGLViewController();
     [unityController presentViewController:self.pickerController animated:YES completion:^{
@@ -58,70 +55,50 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    CGFloat maxSize = self.maxSize;
-    self.maxSize = 0;
-
-    UIImage *image = info[UIImagePickerControllerOriginalImage];
-    if (image == nil) {
+    NSURL *imageURL = info[UIImagePickerControllerImageURL];
+    if (imageURL == nil) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_FIND);
         [self dismissPicker];
         return;
     }
 
-    CGFloat scaleX = fmin(maxSize / image.size.width, 1.0);
-    CGFloat scaleY = fmin(maxSize / image.size.height, 1.0);
-    CGFloat scale = fmin(scaleX, scaleY);
+    NSString *outputPath = [NSTemporaryDirectory() stringByAppendingPathComponent:self.outputFileName];
+    NSURL *outputURL = [NSURL fileURLWithPath:outputPath];
 
-    if (scale != 1.0) {
-        CGSize newSize = CGSizeMake(image.size.width * scale, image.size.height * scale);
-        UIGraphicsBeginImageContext(newSize);
-        [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+    NSError *fileError;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    if ([fileManager fileExistsAtPath:outputPath]) {
+        BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:outputURL error:&fileError];
+        if (removed == NO) {
+            UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
+            [self dismissPicker];
+            return;
+        }
     }
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    if (paths.count == 0) {
+    BOOL copied = [fileManager copyItemAtURL:imageURL toURL:outputURL error:&fileError];
+    if (copied == NO) {
         UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
         [self dismissPicker];
         return;
     }
-    
-    NSString *imageName = self.outputFileName;
-    if ([imageName hasSuffix:@".png"] == NO) {
-        imageName = [imageName stringByAppendingString:@".png"];
-    }
-    
-    NSString *imageSavePath = [(NSString *)[paths objectAtIndex:0] stringByAppendingPathComponent:imageName];
-    NSData *png = UIImagePNGRepresentation(image);
-    if (png == nil) {
-        UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
-        [self dismissPicker];
-        return;
-    }
-    
-    BOOL success = [png writeToFile:imageSavePath atomically:YES];
-    if (success == NO) {
-        UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_COPY);
-        [self dismissPicker];
-        return;
-    }
-    
-    UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, [imageSavePath UTF8String]);
-    
+
+    UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, [outputPath UTF8String]);
+
     [self dismissPicker];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, MESSAGE_FAILED_PICK);
-    
+
     [self dismissPicker];
 }
 
 - (void)dismissPicker
 {
     self.outputFileName = nil;
-    
+
     if (self.pickerController != nil) {
         [self.pickerController dismissViewControllerAnimated:YES completion:^{
             self.pickerController = nil;
@@ -136,6 +113,6 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 extern "C" {
     void Unimgpicker_show(const char* title, const char* outputFileName, int maxSize) {
         Picker *picker = [Picker sharedInstance];
-        [picker show:[NSString stringWithUTF8String:title] outputFileName:[NSString stringWithUTF8String:outputFileName] maxSize:(NSInteger)maxSize];
+        [picker show:[NSString stringWithUTF8String:title] outputFileName:[NSString stringWithUTF8String:outputFileName]];
     }
 }
