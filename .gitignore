@@ -83,6 +83,9 @@ unimgpicker_ios/*
 /Assets/UnityPacker
 /Assets/UnityPacker.meta
 
+/unimgpicker_android/build/
+/unimgpicker_android/unityLibrary/Unimgpicker/build/
+
 ### Rider
 .idea/
 
