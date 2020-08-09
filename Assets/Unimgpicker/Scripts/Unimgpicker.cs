@@ -13,16 +13,16 @@ namespace Kakera
 
         public event ErrorDelegate Failed;
 
-        private IPicker picker = 
-        #if UNITY_IOS && !UNITY_EDITOR
+        private IPicker picker =
+#if UNITY_EDITOR
+            new Picker_editor();
+#elif UNITY_IOS
             new PickeriOS();
-        #elif UNITY_ANDROID && !UNITY_EDITOR
+#elif UNITY_ANDROID
             new PickerAndroid();
-		#elif UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
-			new Picker_editor();
-        #else
+#else
             new PickerUnsupported();
-        #endif
+#endif
 
         [Obsolete("Resizing is deprecated. Use Show(title, outputFileName)")]
         public void Show(string title, string outputFileName, int maxSize)
