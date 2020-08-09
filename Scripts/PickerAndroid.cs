@@ -7,7 +7,7 @@ namespace Kakera
     {
         private static readonly string PickerClass = "com.kakeragames.unimgpicker.Picker";
 
-        public void Show(string title, string outputFileName, int maxSize)
+        public void Show(string title, string outputFileName)
         {
             using (var picker = new AndroidJavaClass(PickerClass))
             {

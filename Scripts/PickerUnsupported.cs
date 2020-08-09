@@ -4,7 +4,7 @@ namespace Kakera
 {
     internal class PickerUnsupported : IPicker
     {
-        public void Show(string title, string outputFileName, int maxSize)
+        public void Show(string title, string outputFileName)
         {
             var message = "Unimgpicker is not supported on this platform.";
             Debug.LogError(message);
