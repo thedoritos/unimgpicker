@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Kakera
@@ -12,9 +11,6 @@ namespace Kakera
 
         [SerializeField]
         private MeshRenderer imageRenderer;
-
-        [SerializeField]
-        private Dropdown sizeDropdown;
 
         private int[] sizes = {1024, 256, 16};
 
@@ -28,7 +24,7 @@ namespace Kakera
 
         public void OnPressShowPicker()
         {
-            imagePicker.Show("Select Image", "unimgpicker", sizes[sizeDropdown.value]);
+            imagePicker.Show("Select Image", "unimgpicker");
         }
 
         private IEnumerator LoadImage(string path, MeshRenderer output)
