@@ -8,7 +8,7 @@ namespace Kakera
 {
 	internal class Picker_editor : IPicker
 	{
-		public void Show(string title, string outputFileName, int maxSize)
+		public void Show(string title, string outputFileName)
 		{
 			var path = EditorUtility.OpenFilePanel(title, "","png");
 			if (path.Length != 0) {

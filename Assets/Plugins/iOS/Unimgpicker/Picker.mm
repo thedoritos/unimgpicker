@@ -111,7 +111,7 @@ const char* MESSAGE_FAILED_COPY = "Failed to copy the image";
 #pragma mark Unity Plugin
 
 extern "C" {
-    void Unimgpicker_show(const char* title, const char* outputFileName, int maxSize) {
+    void Unimgpicker_show(const char* title, const char* outputFileName) {
         Picker *picker = [Picker sharedInstance];
         [picker show:[NSString stringWithUTF8String:title] outputFileName:[NSString stringWithUTF8String:outputFileName]];
     }

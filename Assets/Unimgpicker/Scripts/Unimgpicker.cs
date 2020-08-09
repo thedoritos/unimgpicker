@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 namespace Kakera
 {
@@ -24,9 +24,15 @@ namespace Kakera
             new PickerUnsupported();
         #endif
 
+        [Obsolete("Resizing is deprecated. Use Show(title, outputFileName)")]
         public void Show(string title, string outputFileName, int maxSize)
         {
-            picker.Show(title, outputFileName, maxSize);
+            Show(title, outputFileName);
+        }
+
+        public void Show(string title, string outputFileName)
+        {
+            picker.Show(title, outputFileName);
         }
 
         private void OnComplete(string path)
