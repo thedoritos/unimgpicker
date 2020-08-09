@@ -17,6 +17,6 @@
 
 + (instancetype)sharedInstance;
 
-- (void)show:(NSString *)title outputFileName:(NSString *)name maxSize:(NSInteger)maxSize;
+- (void)show:(NSString *)title outputFileName:(NSString *)name;
 
 @end

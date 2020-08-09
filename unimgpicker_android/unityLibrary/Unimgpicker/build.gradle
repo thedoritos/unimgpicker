@@ -29,7 +29,7 @@ android {
 }
 
 task deleteJar(type: Delete) {
-    delete '../../../Assets/Plugins/Android/Unimgpicker/libs/'
+    delete '../../../Assets/Plugins/Android/unimgpicker.jar'
 }
 
 task createJar(type: Jar) {
@@ -43,6 +43,6 @@ createJar.dependsOn(deleteJar, build)
 
 task exportJar(type: Copy, dependsOn: createJar) {
     from "$buildDir/libs/Unimgpicker.jar"
-    into('../../../Assets/Plugins/Android/Unimgpicker/libs/')
+    into('../../../Assets/Plugins/Android/')
     rename('Unimgpicker.jar', 'unimgpicker.jar')
 }

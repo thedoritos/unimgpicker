@@ -5,16 +5,9 @@ Image picker for Unity iOS/Android
 ![unimgpicker_ios](doc/unimgpicker_ios.gif)
 ![unimgpicker_android](doc/unimgpicker_android.gif)
 
-## Environment
-
-The code is developed on following environments. Note that these are NOT minimum version requirements.
-
-| Platform | OS |  IDE |
-| --- | --- | --- |
-| iOS | 13.3 | Xcode 11.3.1 |
-| Android | 9.0 (API 28) | Android Studio 3.6.1 |
-
 ## Getting Started
+
+Import `unimgpicker.unitypackage` into your project.
 
 Define Photo Library Usage Description on `Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt`
 
@@ -75,6 +68,16 @@ namespace Kakera
     }
 }
 ```
+
+## Environment
+
+The code is developed on following environments. Note that these are NOT minimum version requirements.
+
+| Platform | OS |  IDE |
+| --- | --- | --- |
+| iOS | 13.3 | Xcode 11.6 |
+| Android | 10.0 (API 29) | Android Studio 4.0.1 |
+
 
 ## Building Unimgpicker by Self
 
