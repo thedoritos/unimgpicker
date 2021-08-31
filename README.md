@@ -78,6 +78,7 @@ The code is developed on following environments. Note that these are NOT minimum
 | --- | --- | --- |
 | iOS | 13.3 | Xcode 11.6 |
 | Android | 10.0 (API 29) | Android Studio 4.0.1 |
+| Windows | 10 (20H2) | Visual Studio 2019 16.11.2 |
 
 
 ## Building Unimgpicker by Self
