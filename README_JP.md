@@ -1,15 +1,14 @@
 # unimgpicker-plus
-
 Unityで使えるImage picker iOS/Android/Windowsです。
 - [ReadMe(English)](README.md)
 - ReadMe(日本語)
 
-![image](https://user-images.githubusercontent.com/33755507/131531387-67f5d05a-5fd8-423f-b5c7-2beea1630b33.png)
-![image](https://user-images.githubusercontent.com/33755507/131531449-8df9796c-3fee-4ce8-98a4-883d727d35c2.png)
+![unimgpicker_ios](doc/unimgpicker_ios.gif)
+![unimgpicker_android](doc/unimgpicker_android.gif)
 
 <br>
 
-## 使い方
+## 使い方（Picker-plus）
 1. ```unimgpicker.unitypackage```をUnityのプロジェクトにインポートします。<br>
 ![image](https://user-images.githubusercontent.com/33755507/131508711-7efb16f2-d453-4e92-acf7-a35ebe7943fa.png)
 <br>
@@ -35,7 +34,7 @@ AddImage.csの```Texture(Texture2D), Texture2(Sprite)```に対して参照をか
 ### サンプルデータ
 ```Assets/Unimgpicker/Samples```に入っています。
 
-1. Picker ・・・ 画像を読み込み、テクスチャをCubeのMeshRendererに描画します。ゲームなどの用途で使えます。
+1. Picker ・・・ 画像を読み込み、テクスチャをCubeのMeshRendererに描画するサンプルです。ゲーム等で使えます。
 
 ```C#
 using UnityEngine;
@@ -86,7 +85,7 @@ namespace Kakera
 
 ```
 
-2. Picker-plus ・・・ 画像を読み込み、Spriteに描画します。SNSツール的な使い方を想定しています。
+2. Picker-plus ・・・ 画像を読み込み、Spriteに描画するサンプルです。SNSツール的な使い方を想定しています。
 
 <br>
 
