@@ -1,6 +1,7 @@
 # unimgpicker
-
 Image picker for Unity iOS/Android
+- ReadMe(English)
+- [ReadMe(日本語)](README_JP.md)
 
 ![unimgpicker_ios](doc/unimgpicker_ios.gif)
 ![unimgpicker_android](doc/unimgpicker_android.gif)
