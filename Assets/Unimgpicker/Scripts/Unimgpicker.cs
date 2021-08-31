@@ -20,6 +20,8 @@ namespace Kakera
             new PickeriOS();
 #elif UNITY_ANDROID
             new PickerAndroid();
+#elif UNITY_STANDALONE_WIN
+            new PickerWindows();
 #else
             new PickerUnsupported();
 #endif
