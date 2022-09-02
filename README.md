@@ -78,8 +78,20 @@ The code is developed on following environments. Note that these are NOT minimum
 | iOS | 13.3 | Xcode 11.6 |
 | Android | 10.0 (API 29) | Android Studio 4.0.1 |
 
+## For Developers
 
-## Building Unimgpicker by Self
+### Running formatter
+
+```sh
+# If dotnet6 is installed.
+$ make format
+
+# If docker is installed.
+$ docker build -t dotnet .
+$ docker run --rm -v $PWD:/build -w /build dotnet make format
+```
+
+### Building Unimgpicker by Self
 
 This repository contains Android project to develop Unimgpicker.
 You can make changes to the code and build your own jar.
