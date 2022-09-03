@@ -15,9 +15,6 @@ jobs:
           fetch-depth: 0
 
       - name: Lint Code Base
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_CSHARP: true
-          DEFAULT_BRANCH: master
-          GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
+        run: |
+          docker pull thedoritos/unimgpicker:latest
+          docker run --rm -v $PWD:/build -w /build thedoritos/unimgpicker make lint

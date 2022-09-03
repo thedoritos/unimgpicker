@@ -1,4 +1,4 @@
 format:
-	dotnet format Assembly-CSharp.csproj
+	find ./Assets -name "*.cs" | xargs clang-format -i
 
 .PHONY: format

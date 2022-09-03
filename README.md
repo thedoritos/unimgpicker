@@ -87,8 +87,8 @@ The code is developed on following environments. Note that these are NOT minimum
 $ make format
 
 # If docker is installed.
-$ docker build -t dotnet .
-$ docker run --rm -v $PWD:/build -w /build dotnet make format
+$ docker build -t unimgpicker .
+$ docker run --rm -v $PWD:/build -w /build unimgpicker make format
 ```
 
 ### Building Unimgpicker by Self
