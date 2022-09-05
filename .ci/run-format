@@ -1,4 +1,8 @@
 #!/bin/bash
 DIR=$1
 
+# Permission error workaround on GitHub Actions
+sudo chown user:user -R $DIR
+git config --global --add safe.directory /build
+
 find $DIR -name "*.cs" | xargs clang-format -i
