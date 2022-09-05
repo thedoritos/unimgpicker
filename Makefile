@@ -1,4 +1,7 @@
 format:
-	find ./Assets -name "*.cs" | xargs clang-format -i
+	${CURDIR}/.ci/run-format ${CURDIR}/Assets
 
-.PHONY: format
+lint: format
+	${CURDIR}/.ci/run-lint ${CURDIR}/Assets
+
+.PHONY: format lint

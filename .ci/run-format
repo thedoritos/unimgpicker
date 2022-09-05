@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR=$1
+
+find $DIR -name "*.cs" | xargs clang-format -i
