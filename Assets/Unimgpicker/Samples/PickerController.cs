@@ -12,14 +12,12 @@ namespace Kakera
         [SerializeField]
         private MeshRenderer imageRenderer;
 
-        private int[] sizes = {1024, 256, 16};
+        private int[] sizes = { 1024, 256, 16 };
 
         void Awake()
         {
             imagePicker.Completed += (string path) =>
-            {
-                StartCoroutine(LoadImage(path, imageRenderer));
-            };
+            { StartCoroutine(LoadImage(path, imageRenderer)); };
         }
 
         public void OnPressShowPicker()
