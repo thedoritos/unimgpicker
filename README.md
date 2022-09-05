@@ -83,7 +83,7 @@ The code is developed on following environments. Note that these are NOT minimum
 ### Running formatter
 
 ```sh
-# If dotnet6 is installed.
+# If clang-format is installed.
 $ make format
 
 # If docker is installed.
