@@ -1,0 +1,7 @@
+BasedOnStyle: Microsoft
+
+NamespaceIndentation: All
+ColumnLimit: 256
+
+DeriveLineEnding: false
+UseCRLF: false
