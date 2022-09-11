@@ -78,6 +78,12 @@ The code is developed on following environments. Note that these are NOT minimum
 | iOS | 13.3 | Xcode 11.6 |
 | Android | 10.0 (API 29) | Android Studio 4.0.1 |
 
+### Minimum SDK Versions
+
+| Platform | SDK Version |
+| --- | --- |
+| Android | 6.0 (API 23) |
+
 ## For Developers
 
 ### Running formatter
@@ -91,12 +97,7 @@ $ docker build -t unimgpicker .
 $ docker run --rm -v $PWD:/build -w /build unimgpicker make format
 ```
 
-### Building Unimgpicker by Self
+### Customize Unimgpicker by Self
 
-This repository contains Android project to develop Unimgpicker.
-You can make changes to the code and build your own jar.
-
-```sh
-$ unimgpicker_android
-$ ./gradlew unityLibrary:Unimgpicker:exportJar
-```
+Unimgpicker embedds Obj-C & Java code as Unity plugin.
+You can make changes to the code.
