@@ -79,14 +79,13 @@ crashlytics-build.properties
 unimgpicker_ios/*
 !unimgpicker_ios/.keep
 
+# Android build directory
+unimgpicker_android/*
+!unimgpicker_android/.keep
+
 # UnityPacker
 /Assets/UnityPacker
 /Assets/UnityPacker.meta
-
-/unimgpicker_android/build/
-/unimgpicker_android/unityLibrary/build/
-/unimgpicker_android/unityLibrary/Unimgpicker/build/
-/unimgpicker_android/launcher/build/
 
 /Packages/unimgpicker/
 /Packages/UnityPacker/
