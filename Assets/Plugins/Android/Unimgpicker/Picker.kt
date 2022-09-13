@@ -1,119 +1,112 @@
-package com.kakeragames.unimgpicker;
+package com.kakeragames.unimgpicker
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
+import android.app.Activity
+import android.app.Fragment
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import com.unity3d.player.UnityPlayer
+import java.io.FileNotFoundException
+import java.io.IOException
 
-import com.unity3d.player.UnityPlayer;
+class Picker : Fragment() {
+    companion object {
+        private const val TAG: String = "unimgpicker"
+        private const val REQUEST_CODE: Int = 1
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+        private const val CALLBACK_OBJECT: String = "Unimgpicker"
+        private const val CALLBACK_METHOD: String = "OnComplete"
+        private const val CALLBACK_METHOD_FAILURE: String = "OnFailure"
 
-public class Picker extends Fragment
-{
-    private static final String TAG = "unimgpicker";
-    private static final int REQUEST_CODE = 1;
+        @JvmStatic
+        fun show(title: String, outputFileName: String) {
+            val unityActivity = UnityPlayer.currentActivity
+            if (unityActivity == null) {
+                notifyFailure("Failed to open the picker")
+                return
+            }
 
-    private static final String CALLBACK_OBJECT = "Unimgpicker";
-    private static final String CALLBACK_METHOD = "OnComplete";
-    private static final String CALLBACK_METHOD_FAILURE = "OnFailure";
+            val picker = Picker()
+            picker.mTitle = title
+            picker.mOutputFileName = outputFileName
 
-    private String mTitle;
-    private String mOutputFileName;
+            val transaction = unityActivity.fragmentManager.beginTransaction()
 
-    public static void show(String title, String outputFileName) {
-        Activity unityActivity = UnityPlayer.currentActivity;
-        if (unityActivity == null) {
-            Picker.NotifyFailure("Failed to open the picker");
-            return;
+            transaction.add(picker, TAG)
+            transaction.commit()
         }
 
-        Picker picker = new Picker();
-        picker.mTitle = title;
-        picker.mOutputFileName = outputFileName;
+        @JvmStatic
+        private fun notifySuccess(path: String) {
+            UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, path)
+        }
 
-        FragmentTransaction transaction = unityActivity.getFragmentManager().beginTransaction();
-
-        transaction.add(picker, TAG);
-        transaction.commit();
+        @JvmStatic
+        private fun notifyFailure(cause: String) {
+            UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, cause)
+        }
     }
 
-    private static void NotifySuccess(String path) {
-        UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD, path);
+    private var mTitle: String = ""
+    private var mOutputFileName: String = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val intent = Intent()
+        intent.action = Intent.ACTION_OPEN_DOCUMENT
+        intent.type = "image/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+        startActivityForResult(Intent.createChooser(intent, mTitle), REQUEST_CODE)
     }
 
-    public static void NotifyFailure(String cause) {
-        UnityPlayer.UnitySendMessage(CALLBACK_OBJECT, CALLBACK_METHOD_FAILURE, cause);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("image/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        startActivityForResult(Intent.createChooser(intent, mTitle), REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode != REQUEST_CODE) {
-            return;
+            return
         }
 
-        FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
-        transaction.remove(this);
-        transaction.commit();
+        val transaction = activity.fragmentManager.beginTransaction()
+        transaction.remove(this)
+        transaction.commit()
 
         if (resultCode != Activity.RESULT_OK || data == null) {
-            Picker.NotifyFailure("Failed to pick the image");
-            return;
+            notifyFailure("Failed to pick the image")
+            return
         }
 
-        Uri uri = data.getData();
+        val uri = data.data
         if (uri == null) {
-            Picker.NotifyFailure("Failed to pick the image");
-            return;
+            notifyFailure("Failed to pick the image")
+            return
         }
 
-        Context context = getActivity().getApplicationContext();
+        val context = activity.applicationContext
 
-        try (InputStream inputStream = context.getContentResolver().openInputStream(uri)) {
+        try {
+            val inputStream = context.contentResolver.openInputStream(uri)
             if (inputStream == null) {
-                Picker.NotifyFailure("Failed to find the image");
-                return;
+                notifyFailure("Failed to find the image")
+                return
             }
 
-            try (FileOutputStream outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE)) {
-                byte[] buffer = new byte[1024];
-                int readLength;
-                while ((readLength = inputStream.read(buffer)) > 0) {
-                    outputStream.write(buffer, 0, readLength);
-                }
+            val outputStream = context.openFileOutput(mOutputFileName, Context.MODE_PRIVATE)
+            val buffer = ByteArray(1024)
+            var readLength = 0
+            while ((inputStream.read(buffer).also { readLength = it }) > 0) {
+                outputStream.write(buffer, 0, readLength)
             }
-        } catch (FileNotFoundException e) {
-            Picker.NotifyFailure("Failed to find the image");
-            return;
-        } catch (IOException e) {
-            Picker.NotifyFailure("Failed to copy the image");
-            return;
+        } catch (e: FileNotFoundException) {
+            notifyFailure("Failed to find the image")
+            return
+        } catch (e: IOException) {
+            notifyFailure("Failed to copy the image")
+            return
         }
 
-        File output = context.getFileStreamPath(mOutputFileName);
-        Picker.NotifySuccess(output.getPath());
+        val output = context.getFileStreamPath(mOutputFileName)
+        notifySuccess(output.path)
     }
 }
