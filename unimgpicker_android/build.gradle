@@ -11,7 +11,7 @@ allprojects {
             // See official Gradle and Android Gradle Plugin compatibility table here https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
             // To specify a custom Gradle version in Unity, go do "Preferences > External Tools", uncheck "Gradle Installed with Unity (recommended)" and specify a path to a custom Gradle version
             classpath 'com.android.tools.build:gradle:4.0.1'
-            
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31'
         }
     }
 

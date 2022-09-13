@@ -1,9 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31'
 }
 
 android {
@@ -39,6 +41,9 @@ android {
         doNotStrip '*/armeabi-v7a/*.so'
         doNotStrip '*/arm64-v8a/*.so'
     }
+}
+repositories {
+	mavenCentral()
 }
 
 def getSdkDir() {
