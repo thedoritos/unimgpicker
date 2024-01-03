@@ -2,8 +2,8 @@
 
 Image picker for Unity iOS/Android
 
-![unimgpicker_ios](doc/unimgpicker_ios.gif)
-![unimgpicker_android](doc/unimgpicker_android.gif)
+![unimgpicker_ios](Documentation~/res/unimgpicker_ios.gif)
+![unimgpicker_android](Documentation~/res/unimgpicker_android.gif)
 
 ## Getting Started
 
