@@ -9,6 +9,8 @@ Image picker for Unity iOS/Android
 
 Import `unimgpicker.unitypackage` into your project.
 
+:warning: For package developers: This project is under work to adapt with Package Manager. Please use `.unitypackage` until the migration is done.
+
 Define Photo Library Usage Description on `Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt`
 
 ex: **Unimgpicker/Editor/NSPhotoLibraryUsageDescription.txt**
