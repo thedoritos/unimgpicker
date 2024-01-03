@@ -1,0 +1,7 @@
+{
+  "name": "com.kakeragames.unimgpicker",
+  "version": "2.0.0",
+  "description": "Image picker for Unity iOS/Android",
+  "displayName": "Unimgpicker",
+  "licensesUrl": "https://raw.githubusercontent.com/thedoritos/unimgpicker/main/LICENSE.txt"
+}
