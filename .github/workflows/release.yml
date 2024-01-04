@@ -1,0 +1,55 @@
+name: Release UPM
+
+on:
+  push:
+    tags:
+      - v*
+
+env:
+  MAIN_BRANCH: main
+  RELEASE_BRANCH: upm
+  PACKAGE_ROOT: Assets/Unimgpicker
+  DOC_FILES: README.md CHANGELOG.md LICENSE.md
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get tag name
+        id: tag
+        run: echo ::set-output name=name::${GITHUB_REF#refs/tags/v}
+
+      - name: Set git user to GitHub Actions Bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Create release branch
+        run: |
+          git branch -D $RELEASE_BRANCH &> /dev/null || echo $RELEASE_BRANCH branch is not found
+
+          git subtree split -P "$PACKAGE_ROOT" -b $RELEASE_BRANCH
+          git checkout $RELEASE_BRANCH
+
+          for file in $DOC_FILES; do
+            git checkout $MAIN_BRANCH $file &> /dev/null || echo $file is not found
+          done
+
+          git mv Samples Samples~ &> /dev/null || echo $SAMPLES_DIR is not found
+          rm Samples.meta
+
+          sed -i -e "s/\"version\":.*$/\"version\": \"$TAG\",/" package.json || echo package.json is not found
+
+          git commit -am "Release $TAG"
+
+          git push -f origin $RELEASE_BRANCH
+
+          git checkout -b $RELEASE_BRANCH@$TAG
+          git push -f origin $RELEASE_BRANCH@$TAG
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
