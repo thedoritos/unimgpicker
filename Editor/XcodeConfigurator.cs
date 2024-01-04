@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using Debug = UnityEngine.Debug;
 
-namespace Kakera.Unimgpicker
+namespace Kakera.UnimgpickerEditor
 {
     public class XcodeProjectConfigurator
     {
