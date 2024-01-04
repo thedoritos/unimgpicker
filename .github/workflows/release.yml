@@ -38,6 +38,12 @@ jobs:
 
           for file in $DOC_FILES; do
             git checkout $MAIN_BRANCH $file &> /dev/null || echo $file is not found
+            if [ -f $file ]; then
+              cp package.json.meta $file.meta
+              GUID=$(uuidgen | tr -d '-')
+              sed -i -e "s/guid:.*$/guid: $GUID/" $file.meta
+              git add $file.meta
+            fi
           done
 
           git mv Samples Samples~ &> /dev/null || echo $SAMPLES_DIR is not found
